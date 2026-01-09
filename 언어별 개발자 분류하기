@@ -1,0 +1,17 @@
+-- 1. 먼저 각 등급에 필요한 코드 값들을 서브쿼리로 정의하거나 직접 비교합니다.
+-- 2. CASE 문을 사용하여 우선순위에 따라 GRADE를 지정합니다.
+-- 3. GRADE가 없는(NULL인) 개발자는 제외하고 정렬합니다.
+
+SELECT 
+    CASE 
+        WHEN (SKILL_CODE & (SELECT SUM(CODE) FROM SKILLCODES WHERE CATEGORY = 'Front End')) > 0 
+             AND (SKILL_CODE & (SELECT CODE FROM SKILLCODES WHERE NAME = 'Python')) > 0 THEN 'A'
+        WHEN (SKILL_CODE & (SELECT CODE FROM SKILLCODES WHERE NAME = 'C#')) > 0 THEN 'B'
+        WHEN (SKILL_CODE & (SELECT SUM(CODE) FROM SKILLCODES WHERE CATEGORY = 'Front End')) > 0 THEN 'C'
+    END AS GRADE,
+    ID,
+    EMAIL
+FROM DEVELOPERS
+GROUP BY GRADE, ID, EMAIL
+HAVING GRADE IS NOT NULL
+ORDER BY GRADE ASC, ID ASC;
