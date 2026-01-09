@@ -1,0 +1,6 @@
+SELECT COUNT(*) AS COUNT
+FROM ECOLI_DATA
+-- 2번 형질(2^1 = 2)이 없고 (비트 연산 결과가 0)
+-- AND (1번 형질(2^0 = 1)이 있거나 OR 3번 형질(2^2 = 4)이 있음)
+WHERE (GENOTYPE & 2 = 0) 
+  AND (GENOTYPE & 1 OR GENOTYPE & 4);
